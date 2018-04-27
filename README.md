@@ -12,7 +12,7 @@ tensorboard<1.7会显示没有统计的tensor![](https://github.com/zhouqp631/te
 
 ### 1. 一个简单的例子
 -------------------------
-* 只统计0-dim tensor
+* 只统计0-dim tensor (文件：`summaryUsage.py`)
 ```python
 import tensorflow as tf
 x = tf.Variable(1.0)
@@ -28,7 +28,16 @@ with tf.Session() as sess:
 writer.close()
 ```
 通过`tf.summary.scalar`定义统计的变量，通过`tf.summary.FileWriter`制定日志文件的目录，然后使用`add_summary`添加每一步的变量值。
-![结果为](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/basic_tf.gif)
+运行程序
+```python
+python summaryUsage.py
+```
+打开tensorboard
+```python
+tensorboard --logdir=basic_tf
+
+```
+![TensorBoard结果为](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/basic_tf.gif)
 
 * 统计多维tensor
 ```python
@@ -61,7 +70,7 @@ writer.close()
 * 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html).作为练习，为了更快看到计算结果，只选择了3类:cat,dog,horse.所以数据集的个数为：
 training data | validataion data
 --------------|-----------------
-\[5000*3\]    |\[1000*3]
+    5000*3    |1000*3
 * 卷积网络参考[ConvNetJS CIFAR-10 demo](https://cs.stanford.edu/~karpathy/convnetjs/demo/cifar10.html).前面的卷积层一样，但最后多了一个全连接层.
 
 ### 模型展示
