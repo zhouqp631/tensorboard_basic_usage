@@ -71,7 +71,7 @@ writer.close()
 
 training data | validataion data
 --------------|-----------------
-    5000\*3    |1000\*3
+   15000   |3000
     
 * 卷积网络参考[ConvNetJS CIFAR-10 demo](https://cs.stanford.edu/~karpathy/convnetjs/demo/cifar10.html).前面的卷积层一样，但最后多了一个全连接层.
 
