@@ -113,10 +113,10 @@ def data_augmentation(images):
         distorted_image = tf.map_fn(lambda img: tf.image.random_flip_up_down(img),distorted_image)
 
         distorted_image = tf.map_fn(lambda img: tf.image.random_hue(img,max_delta=0.05),distorted_image) #色调
-        distorted_image = tf.map_fn(lambda img: tf.image.random_saturation(img,lower=0.0, upper=2.0),distorted_image)#饱和
+        distorted_image = tf.map_fn(lambda img: tf.image.random_saturation(img,lower=0.0, upper=1.0),distorted_image)#饱和
 
         distorted_image = tf.map_fn(lambda img: tf.image.random_brightness(img,max_delta=0.2),distorted_image)#亮度
-        distorted_image = tf.map_fn(lambda img: tf.image.random_contrast(img,lower=0.2,upper=1.0),distorted_image)#对比度
+        distorted_image = tf.map_fn(lambda img: tf.image.random_contrast(img,lower=0.2,upper=0.8),distorted_image)#对比度
         distorted_image = tf.map_fn(lambda img:tf.image.per_image_standardization(img),distorted_image)
         distorted_image = tf.map_fn(lambda img:tf.maximum(img,0.0),distorted_image)
         imgs = tf.map_fn(lambda img:tf.minimum(img,1.0),distorted_image)

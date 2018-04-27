@@ -38,7 +38,7 @@ def fc_layer(input, size_in, size_out, name="fc",reg=False):
           tf.summary.histogram("activations", preact)
 
           if reg:
-              weight_l2_loss = 0.001*tf.nn.l2_loss(w)
+              weight_l2_loss = 0.01*tf.nn.l2_loss(w)
               tf.add_to_collection('losses',weight_l2_loss)
           return preact
 
@@ -57,9 +57,9 @@ def mnist_model(learning_rate,use_data_aug,LOGBASE,hparam):
         x_image = tf.image.convert_image_dtype(x_image, tf.float32)
         if use_data_aug :
             x_image = tf.cond(keep_prob<1,lambda:data_augmentation(x_image),lambda:x_image)
-            tf.summary.image('aug_images',x_image, max_outputs=5)
+            tf.summary.image('train',x_image, max_outputs=5)
         else:
-            tf.summary.image('images', x_image, max_outputs=5)
+            tf.summary.image('test', x_image, max_outputs=5)
     # convolution layers
     conv1 = conv_layer(x_image,k=3,s=1,channels_in=3, channels_out=16, name="conv1")
     # norm2 = tf.nn.lrn(conv2, 4, bias=1.0, alpha=0.001 / 9.0, beta=0.75, name='norm2')
@@ -104,12 +104,12 @@ def mnist_model(learning_rate,use_data_aug,LOGBASE,hparam):
 
     merged_summary = tf.summary.merge_all()
     # saver = tf.train.Saver()
-    train_writer = tf.summary.FileWriter(os.path.join(LOGBASE, hparam), graph=sess.graph)
-    test_writer = tf.summary.FileWriter(os.path.join(LOGBASE, hparam))
+    train_writer = tf.summary.FileWriter(os.path.join(LOGBASE, hparam+',train'), graph=sess.graph)
+    test_writer = tf.summary.FileWriter(os.path.join(LOGBASE, hparam+',test'))
 
     sess.run(tf.global_variables_initializer())
     epoches = 5
-    batch_size = 32
+    batch_size = 64
     num_iter = (epoches*cifar10.train.images.shape[0])//batch_size
     print(num_iter)
     for i in range(num_iter):
@@ -146,7 +146,7 @@ def make_hparam_string(learning_rate,use_data_aug):
     return "lr=%.0E,%s" % (learning_rate,data_param)
 
 def main():
-   for learning_rate in [1E-3,3E-3,1E-4]:
+   for learning_rate in [3E-3,5E-4]:
          for use_data_aug in [False,True]:
              hparam = make_hparam_string(learning_rate,use_data_aug)
              print('---------------------------------------------------')
