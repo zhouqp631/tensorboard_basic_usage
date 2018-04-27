@@ -1,0 +1,11 @@
+#PBS -q JinLaiGpu
+#PBS -l nodes=1:ppn=32
+#PBS -l walltime=168:00:00
+
+cd $PBS_O_WORKDIR
+export PATH=$PATH:/usr/local/cuda-8.0/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64
+PY=/opt/software/anaconda3-python-3.5/bin/python
+
+CUDA_VISIBLE_DEVICES=0,1,2 $PY  cifarTensorboard.py
+
