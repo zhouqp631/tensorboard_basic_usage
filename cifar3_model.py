@@ -108,7 +108,7 @@ def mnist_model(learning_rate,use_data_aug,LOGBASE,hparam):
     test_writer = tf.summary.FileWriter(os.path.join(LOGBASE, hparam+',test'))
 
     sess.run(tf.global_variables_initializer())
-    epoches = 5
+    epoches = 50
     batch_size = 64
     num_iter = (epoches*cifar10.train.images.shape[0])//batch_size
     print(num_iter)
