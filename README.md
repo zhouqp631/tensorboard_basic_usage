@@ -67,12 +67,12 @@ writer.close()
 
 ### 2. 模型调参
 -------------------------
-* 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html). 为了更快看到计算结果，只选择了其中3类:**cat,dog,horse**.数据集的个数为：
+* 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html),目录中`cifar-10-batches-py`为从该网站直接下载的数据(`CIFAR-100 python version`). 作为说明，只选择了其中的3类:**cat,dog,horse**.从而数据集的个数为：
 
 |training data | validataion data|
 |------------ | -------------|
 |     15000    | 3000|
-      
+   
 * 卷积网络结构参考[ConvNetJS CIFAR-10 demo](https://cs.stanford.edu/~karpathy/convnetjs/demo/cifar10.html).前面的卷积层一样，但最后多了一个全连接层.
 
 ### 模型展示
