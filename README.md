@@ -5,10 +5,10 @@ Tensorboard基本使用方法
 
 软件要求
 -----------------------
-[Tensorflow 1.7](https://www.tensorflow.org/install/?hl=zh-cn)安装tensorflow时，会自动安装tensorboard。使用最新版本可以避免tensorboard不正常显示的错误。
+**TensorFlow1.7** [Tensorflow 1.7](https://www.tensorflow.org/install/?hl=zh-cn)安装tensorflow时，会自动安装tensorboard。使用最新版本可以避免tensorboard不正常显示的错误。
 tensorboard<1.7会显示没有统计的tensor![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tfless17.png),而1.7只会显示已统计的tensor(没有统计的tensor在INACTIVE里面)
 ![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf17.png)
-
+**chrome插件** [GitHub with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related) 为了正常查看公式
 
 ### 1. 一个简单的例子
 -------------------------
@@ -91,7 +91,10 @@ writer.close()
 
 
 
-* 添加$L_2$范数的一种方式(在`cifar3_model.py`中)：
+* 添加$L_2$范数的一种方式(在`cifar3_model.py`中). 
+   * 其中0.1用来权衡`cross_entropy_mean`和`l2_loss`，其值越大，对参数的惩罚就越大。
+   *通常只对权重做惩罚，而不惩罚bias
+
 ```python
 with tf.name_scope("loss"):
     cross_entropy_mean = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
@@ -104,9 +107,7 @@ with tf.name_scope("loss"):
     tf.summary.scalar("loss", loss)
 
 ```
-    *其中0.1用来权衡`cross_entropy_mean`和`l2_loss`，其值越大，对参数的惩罚就越大。
-    *通常只对权重做惩罚，而不惩罚bias
-
+    
 
 #### 2.2. 学习率的选择
 学习率对训练精度也有很大的影响.本例中不同学习率的训练和测试`accuracy`如下. 可以看出,`learning rate=3E-04`太高，`learning rate=1E-05`太低。
@@ -121,7 +122,8 @@ with tf.name_scope("loss"):
 
 
 
-### References
+### Main References
+- [Deep Learning](http://www.deeplearningbook.org/)
 - [understanding-tensorboard](https://github.com/secsilm/understanding-tensorboard)
 - [Hands-on TensorBoard (TensorFlow Dev Summit 2017)](https://www.youtube.com/watch?v=eBbEDRsCmv4&t=1105s)
 
