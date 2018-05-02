@@ -68,7 +68,6 @@ writer.close()
 ### 1. 模型调参
 -------------------------
 * 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html). 为了更快看到计算结果，只选择了其中3类:**cat,dog,horse**.数据集的个数为：
-
 training data | validataion data
 --------------|-----------------
       15000   |3000
@@ -78,19 +77,20 @@ training data | validataion data
 ### 模型展示
 ![模型的graph](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/modelgraph.png)
 
-#### 1.1 $L_2$正则化
-机器学习中，用来减小测试误差的策略统称为正则化。深度学习常用的正则化方法有参数范数惩罚，数据集增强(data augmentation),Dropout。
+#### 1.1 L_2正则化
+机器学习中，用来减小测试误差的策略统称为正则化。深度学习常用的正则化方法有参数范数惩罚，数据集增强(data augmentation), Dropout。
+
 此处测试参数范数惩罚的作用。
 * 下面结果分别为train和test过程中的`accuracy and loss`.
-可以看出，使用$L_2$以后，训练`accuracy`降低，但是测试`accuray`确实增加了。
-![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
-![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
+可以看出，使用L_2以后，训练`accuracy`降低，但是测试`accuray`确实增加了。
+![Training accuracy](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
+![Test accuracy](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
 
 
 
 
 
-* 添加$L_2$范数的一种方式(在`cifar3_model.py`中)：
+* 添加L_2范数的一种方式(在`cifar3_model.py`中)：
 ```python
 with tf.name_scope("loss"):
     cross_entropy_mean = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
@@ -108,7 +108,7 @@ with tf.name_scope("loss"):
 
 
 #### 1.2 学习率的选择
-学习率对训练精度也有很大的影响,本例中不同学习率的训练和测试`accuracy`如下. 可以看出,`learning rate=3E-04`太高，`learning rate=1E-05`太低。
+学习率对训练精度也有很大的影响.本例中不同学习率的训练和测试`accuracy`如下. 可以看出,`learning rate=3E-04`太高，`learning rate=1E-05`太低。
 ![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/lr_vs.png)
 
 
