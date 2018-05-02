@@ -65,20 +65,20 @@ writer.close()
 
 结果为![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf_basic2.gif)
 
-### 1. 模型调参
+### 2. 模型调参
 -------------------------
 * 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html). 为了更快看到计算结果，只选择了其中3类:**cat,dog,horse**.数据集的个数为：
 
-training data | validataion data
--------------- | -----------------
-      15000    | 3000
+|training data | validataion data|
+|------------ | -------------|
+|     15000    | 3000|
       
 * 卷积网络结构参考[ConvNetJS CIFAR-10 demo](https://cs.stanford.edu/~karpathy/convnetjs/demo/cifar10.html).前面的卷积层一样，但最后多了一个全连接层.
 
 ### 模型展示
 ![模型的graph](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/modelgraph.png)
 
-#### 1.1 $L_2$正则化
+#### 2.1. $L_2$正则化
 机器学习中，用来减小测试误差的策略统称为正则化。深度学习常用的正则化方法有参数范数惩罚，数据集增强(data augmentation), Dropout。
 
 此处测试参数范数惩罚的作用。
@@ -104,11 +104,11 @@ with tf.name_scope("loss"):
     tf.summary.scalar("loss", loss)
 
 ```
-- 其中0.1用来权衡`cross_entropy_mean`和`l2_loss`，其值越大，对参数的惩罚就越大。
-- 通常只对权重做惩罚，而不惩罚bias
+    *其中0.1用来权衡`cross_entropy_mean`和`l2_loss`，其值越大，对参数的惩罚就越大。
+    *通常只对权重做惩罚，而不惩罚bias
 
 
-#### 1.2 学习率的选择
+#### 2.2. 学习率的选择
 学习率对训练精度也有很大的影响.本例中不同学习率的训练和测试`accuracy`如下. 可以看出,`learning rate=3E-04`太高，`learning rate=1E-05`太低。
 ![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/lr_vs.png)
 
