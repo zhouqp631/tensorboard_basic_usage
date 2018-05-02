@@ -85,9 +85,9 @@ writer.close()
 * 下面结果分别为train和test过程中的`accuracy and loss`.
 可以看出，使用$L_2$以后，训练`accuracy`降低，但是测试`accuray`确实增加了。
 
-Training accuracy![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
+***Training accuracy***![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
 
-Test accuracy![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
+***Test accuracy***![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
 
 
 
@@ -112,7 +112,7 @@ with tf.name_scope("loss"):
     
 
 #### 2.2. 学习率的选择
-学习率对训练精度也有很大的影响.本例中不同学习率的训练和测试`accuracy`如下. 可以看出,`learning rate=3E-04`太高，`learning rate=1E-05`太低。
+学习率对训练精度也有很大的影响. 本例中不同学习率的训练和测试`accuracy`如下图. 可以看出,`learning rate=3E-04`太高，`learning rate=1E-05`太低。
 ![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/lr_vs.png)
 
 
