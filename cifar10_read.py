@@ -106,22 +106,6 @@ def read_dataset(dataset_dir, onehot_encoding=True):
     return dataset
 
 
-def data_augmentation(images):
-# images: 4-D tensor of [batch_size,height,width,channesl]
-    with tf.name_scope('data_augmentation'):
-        distorted_image = tf.map_fn(lambda img: tf.image.random_flip_left_right(img),images)
-        distorted_image = tf.map_fn(lambda img: tf.image.random_flip_up_down(img),distorted_image)
-
-        distorted_image = tf.map_fn(lambda img: tf.image.random_hue(img,max_delta=0.05),distorted_image) #色调
-        distorted_image = tf.map_fn(lambda img: tf.image.random_saturation(img,lower=0.0, upper=1.0),distorted_image)#饱和
-
-        distorted_image = tf.map_fn(lambda img: tf.image.random_brightness(img,max_delta=0.2),distorted_image)#亮度
-        distorted_image = tf.map_fn(lambda img: tf.image.random_contrast(img,lower=0.2,upper=0.8),distorted_image)#对比度
-        distorted_image = tf.map_fn(lambda img:tf.image.per_image_standardization(img),distorted_image)
-        distorted_image = tf.map_fn(lambda img:tf.maximum(img,0.0),distorted_image)
-        imgs = tf.map_fn(lambda img:tf.minimum(img,1.0),distorted_image)
-    return imgs
-
 def visual_image(imgs,labels):
     fig, axes1 = plt.subplots(3, 3, figsize=(8, 8))
     i = 0
@@ -147,7 +131,7 @@ if __name__ == '__main__':
    print('valid_image:',cifar10.valid.images.shape)
    print('valid_labels:', cifar10.valid.labels.shape)
 
-   # visual 25 images
+   # visual images
    import  matplotlib.pyplot as plt
    X = cifar10.train.images
    X = X.reshape(15000, 3, 32, 32).transpose(0, 2, 3, 1).astype("uint8")
@@ -156,21 +140,11 @@ if __name__ == '__main__':
    index = [np.random.choice(range(len(X))) for _ in range(9)]
    imgs = X[index]
    Y = cifar10.train.labels[index]
+
+
    visual_image(imgs, Y)
 
 
-   # visual argumented data
-   data_aug = True
-   if data_aug:
-       sess = tf.Session()
-       float_imgs = tf.image.convert_image_dtype(imgs, tf.float32)
-       aug_imgs = data_augmentation(float_imgs)
-       aug_imgs = tf.image.convert_image_dtype(aug_imgs,tf.uint8)
-       aug_imgs =  sess.run(aug_imgs)
-
-       visual_image(aug_imgs, Y)
-
-       sess.close()
 
 
 
