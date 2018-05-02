@@ -5,10 +5,10 @@ Tensorboard基本使用方法
 
 软件要求
 -----------------------
-**TensorFlow1.7** [Tensorflow 1.7](https://www.tensorflow.org/install/?hl=zh-cn)安装tensorflow时，会自动安装tensorboard。使用最新版本可以避免tensorboard不正常显示的错误。
+-**TensorFlow1.7: ** 安装[Tensorflow 1.7](https://www.tensorflow.org/install/?hl=zh-cn)时，会自动安装tensorboard。使用最新版本可以避免tensorboard不正常显示的错误。
 tensorboard<1.7会显示没有统计的tensor![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tfless17.png),而1.7只会显示已统计的tensor(没有统计的tensor在INACTIVE里面)
 ![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf17.png)
-**chrome插件** [GitHub with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related) 为了正常查看公式
+-**chrome插件: ** [GitHub with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related) 为了正常查看公式
 
 ### 1. 一个简单的例子
 -------------------------
@@ -84,8 +84,10 @@ writer.close()
 此处测试参数范数惩罚的作用。
 * 下面结果分别为train和test过程中的`accuracy and loss`.
 可以看出，使用$L_2$以后，训练`accuracy`降低，但是测试`accuray`确实增加了。
-![Training accuracy](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
-![Test accuracy](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
+
+Training accuracy![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
+
+Test accuracy![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
 
 
 
@@ -93,7 +95,8 @@ writer.close()
 
 * 添加$L_2$范数的一种方式(在`cifar3_model.py`中). 
    * 其中0.1用来权衡`cross_entropy_mean`和`l2_loss`，其值越大，对参数的惩罚就越大。
-   *通常只对权重做惩罚，而不惩罚bias
+   *
+   通常只对权重做惩罚，而不惩罚bias
 
 ```python
 with tf.name_scope("loss"):
