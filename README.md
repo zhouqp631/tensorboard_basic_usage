@@ -68,21 +68,22 @@ writer.close()
 ### 1. 模型调参
 -------------------------
 * 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html). 为了更快看到计算结果，只选择了其中3类:**cat,dog,horse**.数据集的个数为：
+
 training data | validataion data
---------------|-----------------
-      15000   |3000
-    
+-------------- | -----------------
+      15000    | 3000
+      
 * 卷积网络结构参考[ConvNetJS CIFAR-10 demo](https://cs.stanford.edu/~karpathy/convnetjs/demo/cifar10.html).前面的卷积层一样，但最后多了一个全连接层.
 
 ### 模型展示
 ![模型的graph](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/modelgraph.png)
 
-#### 1.1 L_2正则化
+#### 1.1 $L_2$正则化
 机器学习中，用来减小测试误差的策略统称为正则化。深度学习常用的正则化方法有参数范数惩罚，数据集增强(data augmentation), Dropout。
 
 此处测试参数范数惩罚的作用。
 * 下面结果分别为train和test过程中的`accuracy and loss`.
-可以看出，使用L_2以后，训练`accuracy`降低，但是测试`accuray`确实增加了。
+可以看出，使用$L_2$以后，训练`accuracy`降低，但是测试`accuray`确实增加了。
 ![Training accuracy](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
 ![Test accuracy](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
 
@@ -90,7 +91,7 @@ training data | validataion data
 
 
 
-* 添加L_2范数的一种方式(在`cifar3_model.py`中)：
+* 添加$L_2$范数的一种方式(在`cifar3_model.py`中)：
 ```python
 with tf.name_scope("loss"):
     cross_entropy_mean = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
