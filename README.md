@@ -5,10 +5,10 @@ Tensorboard基本使用方法
 
 软件要求
 -----------------------
-- **TensorFlow1.7: ** 安装[Tensorflow 1.7](https://www.tensorflow.org/install/?hl=zh-cn)时，会自动安装tensorboard。使用最新版本可以避免tensorboard不正常显示的错误。
+- TensorFlow1.7:  安装[Tensorflow 1.7](https://www.tensorflow.org/install/?hl=zh-cn)时，会自动安装tensorboard。使用最新版本可以避免tensorboard不正常显示的错误。
 tensorboard<1.7会显示没有统计的tensor![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tfless17.png),而1.7只会显示已统计的tensor(没有统计的tensor在INACTIVE里面)
 ![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf17.png)
-- **chrome插件: ** [GitHub with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related) 为了正常查看公式
+- chrome插件:  [GitHub with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related) 为了正常查看公式
 
 ### 1. 一个简单的例子
 -------------------------
