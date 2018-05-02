@@ -12,7 +12,7 @@ tensorboard<1.7会显示没有统计的tensor![](https://github.com/zhouqp631/te
 
 ### 1. 一个简单的例子
 -------------------------
-* 只统计0-dim tensor (文件：`summaryUsage.py`)
+* 统计0-dim tensor (文件：`summaryUsage.py`)
 ```python
 import tensorflow as tf
 x = tf.Variable(1.0)
@@ -34,12 +34,12 @@ python summaryUsage.py
 ```
 打开tensorboard
 ```python
-tensorboard --logdir=basic_tf
+tensorboard  --logdir=basic_tf
 
 ```
-![TensorBoard结果为](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/basic_tf.gif)
+TensorBoard结果为![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/basic_tf.gif)
 
-* 统计多维tensor
+* 统计n-d(多维)tensor
 ```python
 import tensorflow as tf
 
@@ -61,76 +61,70 @@ with tf.Session() as sess:
         writer.add_summary(merged_smy,global_step=i)
 writer.close()
 ```
-通过`tf.summary.histogram`统计`ynew`的值，然后用`merged_summary = tf.summary.merge_all()`把·tf.summary.scalar`和`tf.summary.histogram`统计的tensor放在一起，最后在迭代中写入。
+通过`tf.summary.histogram`统计`ynew`的值，然后用`merged_summary = tf.summary.merge_all()`把`tf.summary.scalar`和`tf.summary.histogram`放在一起，最后在迭代中写入。
 
-![结果为](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf_basic2.gif)
+结果为![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf_basic2.gif)
 
 ### 1. 模型调参
 -------------------------
-* 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html).作为练习，为了更快看到计算结果，只选择了3类:cat,dog,horse.所以数据集的个数为：
+* 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html). 为了更快看到计算结果，只选择了其中3类:**cat,dog,horse**.数据集的个数为：
 
 training data | validataion data
 --------------|-----------------
-   15000   |3000
+      15000   |3000
     
-* 卷积网络参考[ConvNetJS CIFAR-10 demo](https://cs.stanford.edu/~karpathy/convnetjs/demo/cifar10.html).前面的卷积层一样，但最后多了一个全连接层.
+* 卷积网络结构参考[ConvNetJS CIFAR-10 demo](https://cs.stanford.edu/~karpathy/convnetjs/demo/cifar10.html).前面的卷积层一样，但最后多了一个全连接层.
 
 ### 模型展示
 ![模型的graph](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/modelgraph.png)
 
+#### 1.1 $L_2$正则化
+机器学习中，用来减小测试误差的策略统称为正则化。深度学习常用的正则化方法有参数范数惩罚，数据集增强(data augmentation),Dropout。
+此处测试参数范数惩罚的作用。
+* 下面结果分别为train和test过程中的`accuracy and loss`.
+可以看出，使用$L_2$以后，训练`accuracy`降低，但是测试`accuray`确实增加了。
+![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_train.png)
+![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/reg_test.png)
 
-#### 1.1. 分析数据增广的作用
-data augmentation通过增加数据扰动提高模型的泛化能力。一个图示(左边为原始图像，右边为augmentation后图像)
-![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/data_aug.png)
 
 
 
-* 在`cifar3_model.py`中`cifar3_model`中使用方式如下：
-> `keep_prob`是`dropout`层的保留概率，当其值小于1是，为训练阶段，所以可以曾广。而其值等于1时，为测试阶段，输入数据不需要处理。
-> `tf.cond`是tensorflow中的判断语句。如果使用下面方式，会出错：
 
+* 添加$L_2$范数的一种方式(在`cifar3_model.py`中)：
 ```python
-is_training = tf.placeholder(tf.bool)
-if is_training:
-   x_image = data_augmentation(x_image)
+with tf.name_scope("loss"):
+    cross_entropy_mean = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(
+            logits=logits, labels=y), name="cross_entropy_mean")
+    loss = cross_entropy_mean
+    if use_regu:
+        trainable_vars = tf.trainable_variables()
+        l2_loss = 0.1 * tf.add_n([tf.nn.l2_loss(v) for v in trainable_vars if not 'b' in v.name])
+        loss = cross_entropy_mean+l2_loss
+    tf.summary.scalar("loss", loss)
 
 ```
+- 其中0.1用来权衡`cross_entropy_mean`和`l2_loss`，其值越大，对参数的惩罚就越大。
+- 通常只对权重做惩罚，而不惩罚bias
 
-```python
-if use_data_aug :
-    x_image = tf.cond(keep_prob<1,lambda:data_augmentation(x_image),lambda:x_image)
-    tf.summary.image('train',x_image, max_outputs=5)
-else:
-    tf.summary.image('test', x_image, max_outputs=5)
 
-```
-在`cifar10_read.py`中，代码为(对于每一个batch单独处理):
-```python
-def data_augmentation(images):
-# images: 4-D tensor of [batch_size,height,width,channesl]
-    with tf.name_scope('data_augmentation'):
-        distorted_image = tf.map_fn(lambda img: tf.image.random_flip_left_right(img),images)
-        distorted_image = tf.map_fn(lambda img: tf.image.random_flip_up_down(img),distorted_image)
+#### 1.2 学习率的选择
+学习率对训练精度也有很大的影响,本例中不同学习率的训练和测试`accuracy`如下. 可以看出,`learning rate=3E-04`太高，`learning rate=1E-05`太低。
+![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/lr_vs.png)
 
-        distorted_image = tf.map_fn(lambda img: tf.image.random_hue(img,max_delta=0.05),distorted_image) #色调
-        distorted_image = tf.map_fn(lambda img: tf.image.random_saturation(img,lower=0.0, upper=2.0),distorted_image)#饱和
 
-        distorted_image = tf.map_fn(lambda img: tf.image.random_brightness(img,max_delta=0.2),distorted_image)#亮度
-        distorted_image = tf.map_fn(lambda img: tf.image.random_contrast(img,lower=0.2,upper=1.0),distorted_image)#对比度
-        distorted_image = tf.map_fn(lambda img:tf.image.per_image_standardization(img),distorted_image)
-        
-        distorted_image = tf.map_fn(lambda img:tf.maximum(img,0.0),distorted_image)
-        imgs = tf.map_fn(lambda img:tf.minimum(img,1.0),distorted_image)
-    return imgs
-```
+- 可用来调节学习率的参考图![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/lr.png)
 
-#### 1.2. 学习率的选择
+
+
+
 
 
 
 ### References
 - [understanding-tensorboard](https://github.com/secsilm/understanding-tensorboard)
 - [Hands-on TensorBoard (TensorFlow Dev Summit 2017)](https://www.youtube.com/watch?v=eBbEDRsCmv4&t=1105s)
+
+
 
 ### Apendix
 * 代码主要函数
