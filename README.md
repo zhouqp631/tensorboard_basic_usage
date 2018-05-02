@@ -1,7 +1,7 @@
 Tensorboard基本使用方法
 -------------------------
-1. [一个简单的例子](#一个简单的例子)
-2. [模型调参](#模型调参)
+1. [一个简单的例子](#1.一个简单的例子)
+2. [模型调参](#2.模型调参)
 
 软件要求
 -----------------------
@@ -10,7 +10,7 @@ tensorboard<1.7会显示没有统计的tensor![](https://github.com/zhouqp631/te
 ![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf17.png)
 - chrome插件:  [GitHub with MathJax](https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima/related) 为了正常查看公式
 
-1. ### 一个简单的例子
+ ### 1.一个简单的例子
 -------------------------
 * 统计0-dim tensor (文件：`summaryUsage.py`)
 ```python
@@ -65,7 +65,7 @@ writer.close()
 
 结果为![](https://github.com/zhouqp631/tensorboard_basic_usage/blob/master/files/tf_basic2.gif)
 
-2. ### 模型调参
+ ### 2.模型调参
 -------------------------
 * 数据使用的[CIFAR-10](http://www.cs.toronto.edu/~kriz/cifar.html),目录中`cifar-10-batches-py`为从该网站直接下载的数据(`CIFAR-100 python version`). 作为说明，只选择了其中的3类:**cat,dog,horse**. 从而数据集的个数为：
 
